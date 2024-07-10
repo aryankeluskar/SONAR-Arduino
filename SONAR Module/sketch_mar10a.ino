@@ -1,13 +1,12 @@
-
-
- /*
- OLED GND --> ARDUINO GND
- OLED VCC --> ARDUINO 5V
- OLED D0  --> ARDUINO D10
- OLED D1  --> ARDUINO D9
- OLED RES --> ARDUINO D13
- OLED DC  --> ARDUINO D11
- OLED CS  --> ARDUINO D12
+/*
+  PIN MAP:
+  OLED GND --> ARDUINO GND
+  OLED VCC --> ARDUINO 5V
+  OLED D0  --> ARDUINO D10
+  OLED D1  --> ARDUINO D9
+  OLED RES --> ARDUINO D13
+  OLED DC  --> ARDUINO D11
+  OLED CS  --> ARDUINO D12
 */
 #include <SPI.h>
 #include <Wire.h>
@@ -31,6 +30,17 @@ int distance;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
   OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
+/**
+ * Initializes the setup of the Arduino.
+ *
+ * This function is called once at the beginning of the program. It sets up the serial communication
+ * at a baud rate of 9600, initializes the SSD1306 display, sets the trigPin as an output, and the
+ * echoPin as an input. It also displays the initial contents of the display buffer on the screen
+ * and clears the buffer.
+ *
+ * @return void
+ * 
+ */
 void setup(){
   Serial.begin(9600);
 
@@ -50,6 +60,21 @@ void setup(){
   display.clearDisplay();
 }
 
+
+/**
+ * Main loop function that clears the display, sets text size, color, and cursor position,
+ * reads sensor data, calculates distance, prints distance in centimeters on the display,
+ * and updates the display, with a 1-second delay between iterations.
+ *
+ * The formula to compute distance from duration is: distance = duration * 0.034 / 2.
+ * This formula is used because the ultrasonic sensor is emitting a sound wave
+ * and measuring the time it takes for the sound wave to bounce off an object and return. By
+ * multiplying the time by the speed of sound, we can calculate the distance the sound wave
+ * traveled. The 2 is used to convert the time to centimeters because the speed of sound is
+ * typically given in meters per second, and there are 100 centimeters in a meter.
+ * 
+ * @return void
+ */
 void loop()
 {
   display.clearDisplay();
